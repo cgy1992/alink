@@ -146,214 +146,213 @@ typedef FINALFUNC *PFINALFUNC;
 
 struct inputfmt
 {
-    PCHAR name;
-    PCHAR extension;
-    PDETECTFUNC detect;
-    PLOADFUNC load;
-    PCHAR description;
+	PCHAR name;
+	PCHAR extension;
+	PDETECTFUNC detect;
+	PLOADFUNC load;
+	PCHAR description;
 };
 
 struct outputfmt
 {
-    PCHAR name;
-    PCHAR extension;
-    PINITFUNC initialise;
-    PFINALFUNC finalise;
-    PCSWITCHENTRY switches;
-    PCHAR description;
+	PCHAR name;
+	PCHAR extension;
+	PINITFUNC initialise;
+	PFINALFUNC finalise;
+	PCSWITCHENTRY switches;
+	PCHAR description;
 };
 
 struct switchentry
 {
-    PCHAR name;
-    UINT count;
-    PCHAR description;
+	PCHAR name;
+	UINT count;
+	PCHAR description;
 };
 
 struct switchparam
 {
-    PCHAR name;
-    UINT count;
-    PPCHAR params;
+	PCHAR name;
+	UINT count;
+	PPCHAR params;
 };
 
 struct extref
 {
-    PCHAR name;
-    INT typenum;
-    PSYMBOL pubdef;
-    PMODULE mod;
-    BOOL local;
+	PCHAR name;
+	INT typenum;
+	PSYMBOL pubdef;
+	PMODULE mod;
+	BOOL local;
 };
 
 struct reloc
 {
-    enum {REL_OFS8,REL_OFS16,REL_OFS32,REL_SEG,REL_PTR16,REL_PTR32,
-	  REL_BYTE2} rtype;
-    enum {REL_DEFAULT,REL_ABS,REL_RVA,REL_FRAME,REL_SELF,REL_FILEPOS} base;
-    UINT ofs;
-    PSEG tseg;
-    PSEG fseg;
-    PEXTREF text;
-    PEXTREF fext;
-    UINT disp;
+	enum {REL_OFS8,REL_OFS16,REL_OFS32,REL_SEG,REL_PTR16,REL_PTR32, REL_BYTE2} rtype;
+	enum {REL_DEFAULT,REL_ABS,REL_RVA,REL_FRAME,REL_SELF,REL_FILEPOS} base;
+	UINT ofs;
+	PSEG tseg;
+	PSEG fseg;
+	PEXTREF text;
+	PEXTREF fext;
+	UINT disp;
 };
 
 struct datablock
 {
-    UINT offset;
-    UINT length;
-    UINT align;
-    PUCHAR data;
+	UINT offset;
+	UINT length;
+	UINT align;
+	PUCHAR data;
 };
 
 struct content
 {
-    enum {DATA,SEGMENT} flag;
-    PSEG seg;
-    PDATABLOCK data;
+	enum {DATA,SEGMENT} flag;
+	PSEG seg;
+	PDATABLOCK data;
 };
 
 struct linenum
 {
-    UINT sourceFile;
-    UINT num;
-    UINT offset;
+	UINT sourceFile;
+	UINT num;
+	UINT offset;
 };
 
 struct scriptblock
 {
-    UINT dummy;
+	UINT dummy;
 };
 
 struct segment
 {
-    PCHAR name;
-    PCHAR class;
-    PCHAR sortKey;
-    PMODULE mod;
-    UINT length;
-    UINT base;
-    UINT align;
-    enum {SEGF_PRIVATE=0,SEGF_PUBLIC,SEGF_COMMON,SEGF_STACK} combine;
-    UINT group:1,addressspace:1,absolute:1,use32:1,fpset:1,
-	moveable:1,discardable:1,shared:1,
-	code:1,initdata:1,uninitdata:1,read:1,write:1,execute:1,
-	discard:1,nocache:1,nopage:1,internal:1;
-    INT section;
-    UINT filepos;
-    UINT contentCount;
-    PCONTENT contentList;
-    PSEG parent;
-    UINT lineCount;
-    PLINENUM lines;
-    UINT relocCount;
-    PRELOC relocs;
-    UINT scriptCount;
-    PSCRIPTBLOCK scriptList;
+	PCHAR name;
+	PCHAR class;
+	PCHAR sortKey;
+	PMODULE mod;
+	UINT length;
+	UINT base;
+	UINT align;
+	enum {SEGF_PRIVATE=0,SEGF_PUBLIC,SEGF_COMMON,SEGF_STACK} combine;
+	UINT group:1,addressspace:1,absolute:1,use32:1,fpset:1,
+		moveable:1,discardable:1,shared:1,
+		code:1,initdata:1,uninitdata:1,read:1,write:1,execute:1,
+		discard:1,nocache:1,nopage:1,internal:1;
+	INT section;
+	UINT filepos;
+	UINT contentCount;
+	PCONTENT contentList;
+	PSEG parent;
+	UINT lineCount;
+	PLINENUM lines;
+	UINT relocCount;
+	PRELOC relocs;
+	UINT scriptCount;
+	PSCRIPTBLOCK scriptList;
 };
 
 struct symbol
 {
-    PCHAR name;
-    PMODULE mod;
-    INT type;
-    UINT refCount;
-    PSEG seg;
-    INT grpnum;
-    INT typenum;
-    UINT ofs;
-    PCHAR aliasName;
-    PCHAR dllname;
-    PCHAR impname;
-    USHORT ordinal;
-    UINT length;
-    BOOL isfar;
-    PPCOMDATREC comdatList;
-    UINT comdatCount;
-    UINT filepos;
-    PLOADFUNC modload;
-    PEXPORTREC export;
+	PCHAR name;
+	PMODULE mod;
+	INT type;
+	UINT refCount;
+	PSEG seg;
+	INT grpnum;
+	INT typenum;
+	UINT ofs;
+	PCHAR aliasName;
+	PCHAR dllname;
+	PCHAR impname;
+	USHORT ordinal;
+	UINT length;
+	BOOL isfar;
+	PPCOMDATREC comdatList;
+	UINT comdatCount;
+	UINT filepos;
+	PLOADFUNC modload;
+	PEXPORTREC export;
 };
 
 struct comdatrec
 {
-    PPSEG segList;
-    UINT segCount;
-    enum {COMDAT_UNIQUE,COMDAT_LARGEST,
-	  COMDAT_SAMESIZE,COMDAT_ANY,COMDAT_EXACT} combine;
+	PPSEG segList;
+	UINT segCount;
+	enum {COMDAT_UNIQUE,COMDAT_LARGEST,
+	      COMDAT_SAMESIZE,COMDAT_ANY,COMDAT_EXACT} combine;
 };
 
 struct module
 {
-    PCHAR name;
-    PCHAR file;
-    PCHAR compiler;
-    PPCHAR dependencies;
-    UINT depCount;
-    PPCHAR sourceFiles;
-    UINT sourceFileCount;
-    PPCHAR comments;
-    UINT commentCount;
-    PCINPUTFMT fmt;
-    PUCHAR formatSpecificData;
+	PCHAR name;
+	PCHAR file;
+	PCHAR compiler;
+	PPCHAR dependencies;
+	UINT depCount;
+	PPCHAR sourceFiles;
+	UINT sourceFileCount;
+	PPCHAR comments;
+	UINT commentCount;
+	PCINPUTFMT fmt;
+	PUCHAR formatSpecificData;
 };
 
 struct impentry
 {
-    PUCHAR name;
-    USHORT ordinal;
-    PPSYMBOL publist;
-    UINT pubcount;
+	PUCHAR name;
+	USHORT ordinal;
+	PPSYMBOL publist;
+	UINT pubcount;
 };
 
 struct impdll
 {
-    PUCHAR name;
-    PIMPENTRY entry;
-    UINT entryCount;
+	PUCHAR name;
+	PIMPENTRY entry;
+	UINT entryCount;
 };
 
 struct coffsym {
-    PUCHAR name;
-    UINT value;
-    SHORT section;
-    USHORT type;
-    UCHAR class;
-    INT extnum;
-    UINT numAuxRecs;
-    PUCHAR auxRecs;
-    BOOL isComDat;
-    INT sourceFile;
+	PUCHAR name;
+	UINT value;
+	SHORT section;
+	USHORT type;
+	UCHAR class;
+	INT extnum;
+	UINT numAuxRecs;
+	PUCHAR auxRecs;
+	BOOL isComDat;
+	INT sourceFile;
 };
 
 struct resource
 {
-    BOOL is32;
-    PUCHAR typename;
-    PUCHAR name;
-    PUCHAR data;
-    UINT length;
-    USHORT typeid;
-    USHORT id;
-    USHORT languageid;
+	BOOL is32;
+	PUCHAR typename;
+	PUCHAR name;
+	PUCHAR data;
+	UINT length;
+	USHORT typeid;
+	USHORT id;
+	USHORT languageid;
 };
 
 struct libmod
 {
-    PMODULE mod;
-    UINT filepos;
+	PMODULE mod;
+	UINT filepos;
 };
 
 struct exportrec
 {
-    PCHAR int_name;
-    PCHAR exp_name;
-    UINT ordinal;
-    PEXTREF intsym;
-    BOOL isResident;
-    BOOL noData;
-    UINT numParams;
+	PCHAR int_name;
+	PCHAR exp_name;
+	UINT ordinal;
+	PEXTREF intsym;
+	BOOL isResident;
+	BOOL noData;
+	UINT numParams;
 };
 
 int sortCompare(const void *x1,const void *x2);
@@ -372,8 +371,7 @@ void checkFree(void *p);
 
 PDATABLOCK createDataBlock(PUCHAR p,UINT offset,UINT length,UINT align);
 void freeDataBlock(PDATABLOCK d);
-PSEG createSection(PCHAR name,PCHAR class,PCHAR sortKey,PMODULE mod,UINT length,
-		   UINT align);
+PSEG createSection(PCHAR name,PCHAR class,PCHAR sortKey,PMODULE mod,UINT length, UINT align);
 PSEG createDuplicateSection(PSEG old);
 void freeSection(PSEG s);
 PSEG addSeg(PSEG s,PSEG c);

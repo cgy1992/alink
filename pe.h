@@ -182,9 +182,9 @@
 #define PE_DEBUG_COFF          1
 #define PE_DEBUG_CODEVIEW      2
 #define PE_DEBUG_FPO           3
-#define PE_DEBUG_MISC          4   
-#define PE_DEBUG_EXCEPTION     5 
-#define PE_DEBUG_FIXUP         6 
+#define PE_DEBUG_MISC          4
+#define PE_DEBUG_EXCEPTION     5
+#define PE_DEBUG_FIXUP         6
 #define PE_DEBUG_OMAP_TO_SRC   7 
 #define PE_DEBUG_OMAP_FROM_SRC 8 
 #define PE_DEBUG_BORLAND       9

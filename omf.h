@@ -160,18 +160,18 @@ typedef struct liblock LIBLOCK,*PLIBLOCK, **PPLIBLOCK;
 
 struct liblock
 {
-    UINT count;
-    UINT blocks;
-    UINT dataofs;
-    void *data;
+	UINT count;
+	UINT blocks;
+	UINT dataofs;
+	void *data;
 };
 
 typedef struct comdatentry COMDATENTRY,*PCOMDATENTRY;
 
 struct comdatentry
 {
-    PCHAR name;
-    PCOMDATREC comdat;
+	PCHAR name;
+	PCOMDATREC comdat;
 };
 
 

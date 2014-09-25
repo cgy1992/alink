@@ -5,8 +5,8 @@
 
 struct mergerec
 {
-    PCHAR sourceName;
-    PCHAR targetName;
+	PCHAR sourceName;
+	PCHAR targetName;
 };
 
 typedef struct mergerec MERGEREC, *PMERGEREC,**PPMERGEREC;
