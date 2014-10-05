@@ -4,8 +4,8 @@ static USHORT maxalloc=0xffff;
 static USHORT minalloc=0;
 
 CSWITCHENTRY EXESwitches[]={
-	{"maxalloc",1,"Maximimum extra paragraphs to allocate"},
-	{"minalloc",1,"Minimimum extra paragraphs to allocate"},
+	{"maxalloc",1,"Maximum extra paragraphs to allocate"},
+	{"minalloc",1,"Minimum extra paragraphs to allocate"},
 	{NULL,0,NULL}
 };
 
