@@ -376,9 +376,30 @@ static void initialise(void)
 	absoluteSegment=createSection("ABSOLUTE",NULL,NULL,NULL,0,1);
 }
 
+void printSwitchEntry(PCSWITCHENTRY sw, UINT *line)
+{
+	UINT k,j;
+	int c;
+	if(*line>=24)
+	{
+		diagnostic(DIAG_VITAL,"----Press Enter to continue----");
+		while(((c=getchar())!='\n') && (c!=EOF));
+		*line=0;
+	}
+	(*line)++;
+	diagnostic(DIAG_VITAL,"  -%s%ln",sw->name,&k);
+	for(j=0;j<sw->count;++j)
+	{
+		diagnostic(DIAG_VITAL," xx");
+		k+=3;
+	}
+	for(;k<20;++k) putchar(' ');
+	diagnostic(DIAG_VITAL,"%.*s\n",(int)(80-k),sw->description?sw->description:"");
+}
+
 void initFormat(PSWITCHPARAM sp)
 {
-	UINT i,j,k,l,line;
+	UINT i,j,line;
 	int c;
 	if(!sp)
 	{
@@ -433,21 +454,7 @@ void initFormat(PSWITCHPARAM sp)
 				line=1;
 				for(i=0;systemSwitches[i].name;++i)
 				{
-					if(line>=24)
-					{
-						diagnostic(DIAG_VITAL,"----Press Enter to continue----");
-						while(((c=getchar())!='\n') && (c!=EOF));
-						line=0;
-					}
-					line++;
-					diagnostic(DIAG_VITAL,"  -%s%ln",systemSwitches[i].name,&k);
-					for(j=0;j<systemSwitches[i].count;++j)
-					{
-						diagnostic(DIAG_VITAL," xx");
-						k+=3;
-					}
-					for(;k<20;++k) putchar(' ');
-					diagnostic(DIAG_VITAL,"%.*s\n",(int)(80-k),systemSwitches[i].description?systemSwitches[i].description:"");
+					printSwitchEntry(&systemSwitches[i],&line);
 				}
 				for(i=0;outputFormats[i].name;++i)
 				{
@@ -463,22 +470,7 @@ void initFormat(PSWITCHPARAM sp)
 					if(!outputFormats[i].switches) continue;
 					for(j=0;outputFormats[i].switches[j].name;++j)
 					{
-						if(line>=24)
-						{
-							diagnostic(DIAG_VITAL,"----Press Enter to continue----");
-							while(((c=getchar())!='\n') && (c!=EOF));
-							line=0;
-						}
-						line++;
-						diagnostic(DIAG_VITAL,"  -%s%ln",outputFormats[i].switches[j].name,&k);
-						for(l=0;l<outputFormats[i].switches[j].count;++l)
-						{
-							diagnostic(DIAG_VITAL," xx");
-							k+=3;
-						}
-						for(;k<20;++k) putchar(' ');
-						diagnostic(DIAG_VITAL,"%.*s\n",(int)(80-k),outputFormats[i].switches[j].description?
-						           outputFormats[i].switches[j].description:"");
+						printSwitchEntry(&outputFormats[i].switches[j],&line);
 					}
 				}
 				exit(0);
