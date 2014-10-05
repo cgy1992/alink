@@ -10,14 +10,5 @@ for any warranty or support you may wish to give your customers.
 As this source is free, it comes with no warranty whatsoever - use it
 entirely at your own risk.
 
-makefile contains the makefile for use with GCC (RSXNT)
-
-alink.mak contains the makefile for use with GCC (RSXNT), linking with the
-ALINK libaries. Set C_INCLUDE_PATH to point to the ALINK library headers.
-
-alink2.mak contains the makefile for use with MSVC, linking with the ALINK
-libraries. Set INCLUDE to point to the ALINK library headers.
-
-Any comments or bug reports, please email me at
-
-anthony_w@geocities.com
+To compile the code, use CMake (version 2.8 or later) to generate a
+Makefile or build project for any supported C compiler on your system.

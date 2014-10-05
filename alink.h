@@ -1,29 +1,7 @@
 #ifndef ALINK_H
 #define ALINK_H
 
-/* comment out any of the following macros that don't apply */
-
-/* are filename case sensitive (e.g on Linux) or not (e.g. on DOS) */
-/* #define GOT_CASE_SENSITIVE_FILENAMES */
-
-/* stricmp, strcmpi and strcasecmp are platform-dependent case-insenstive */
-/* string compare functions */
-#define GOT_STRICMP
-/* #define GOT_STRCMPI */
-/* #define GOT_STRCASECMP */
-
-/* strdup is sometimes _strdup */
-#define GOT_STRDUP
-/* #define GOT__STRDUP */
-
-/* strupr is not always available */
-#define GOT_STRUPR
-
-/* which of snprintf and _snprintf do we have (we need one) */
-#define GOT_SNPRINTF
-/* #define GOT__SNPRINTF */
-
-/* end of configuration section */
+#include "alink_config.h"
 
 #define ALINK_MAJOR 1
 #define ALINK_MINOR 7
@@ -463,7 +441,6 @@ int vsnprintf(char *buf,size_t count,const char*fmt,va_list ap);
 
 extern BOOL case_sensitive;
 extern BOOL padsegments;
-extern BOOL relocsRequired;
 extern UINT frameAlign;
 extern BOOL dosSegOrdering;
 extern BOOL noDefaultLibs;
