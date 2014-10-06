@@ -203,16 +203,12 @@ void performFixups(PSEG s)
 			}
 			delta=d->data[offset]+(d->data[offset+1]<<8);
 			delta+=disp;
-			d->data[offset]=delta&0xff;
-			d->data[offset+1]=(delta>>8)&0xff;
+			Set16(&d->data[offset],delta);
 			break;
 		case REL_OFS32:
 			delta=d->data[offset]+(d->data[offset+1]<<8)+(d->data[offset+2]<<16)+(d->data[offset+3]<<24);
 			delta+=disp;
-			d->data[offset]=delta&0xff;
-			d->data[offset+1]=(delta>>8)&0xff;
-			d->data[offset+2]=(delta>>16)&0xff;
-			d->data[offset+3]=(delta>>24)&0xff;
+			Set32(&d->data[offset],delta);
 			break;
 		case REL_BYTE2:
 			delta=d->data[offset];
@@ -232,8 +228,7 @@ void performFixups(PSEG s)
 			}
 			delta=d->data[offset]+(d->data[offset+1]<<8);
 			delta+=section;
-			d->data[offset]=delta&0xff;
-			d->data[offset+1]=(delta>>8)&0xff;
+			Set16(&d->data[offset],delta);
 			break;
 		case REL_PTR16:
 			if(section<0)
@@ -253,13 +248,11 @@ void performFixups(PSEG s)
 			}
 			delta=d->data[offset]+(d->data[offset+1]<<8);
 			delta+=disp;
-			d->data[offset]=delta&0xff;
-			d->data[offset+1]=(delta>>8)&0xff;
+			Set16(&d->data[offset],delta);
 
 			delta=d->data[offset+2]+(d->data[offset+3]<<8);
 			delta+=section;
-			d->data[offset+2]=delta&0xff;
-			d->data[offset+3]=(delta>>8)&0xff;
+			Set16(&d->data[offset+2],delta);
 			break;
 		case REL_PTR32:
 			if(section<0)
@@ -269,15 +262,11 @@ void performFixups(PSEG s)
 			}
 			delta=d->data[offset]+(d->data[offset+1]<<8)+(d->data[offset+2]<<16)+(d->data[offset+3]<<24);
 			delta+=disp;
-			d->data[offset]=delta&0xff;
-			d->data[offset+1]=(delta>>8)&0xff;
-			d->data[offset+2]=(delta>>16)&0xff;
-			d->data[offset+3]=(delta>>24)&0xff;
+			Set32(&d->data[offset],delta);
 
 			delta=d->data[offset+4]+(d->data[offset+5]<<8);
 			delta+=section;
-			d->data[offset+4]=delta&0xff;
-			d->data[offset+5]=(delta>>8)&0xff;
+			Set16(&d->data[offset+4],delta);
 			break;
 		default:
 			addError("Invalid relocation type");

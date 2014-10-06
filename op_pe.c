@@ -417,17 +417,12 @@ static PSEG createPEHeader(void)
 	headbuf[PE_SIGNATURE+2]=0;
 	headbuf[PE_SIGNATURE+3]=0;
 
-	headbuf[PE_MACHINEID]=thisCpu&0xff;
-	headbuf[PE_MACHINEID+1]=(thisCpu>>8)&0xff;
+	Set16(&headbuf[PE_MACHINEID],thisCpu);
 
 	time(&now);
-	headbuf[PE_DATESTAMP]=now&0xff;
-	headbuf[PE_DATESTAMP+1]=(now>>8)&0xff;
-	headbuf[PE_DATESTAMP+2]=(now>>16)&0xff;
-	headbuf[PE_DATESTAMP+3]=(now>>24)&0xff;
+	Set32(&headbuf[PE_DATESTAMP],now);
 
-	headbuf[PE_HDRSIZE]=PE_OPTIONAL_HEADER_SIZE&0xff;
-	headbuf[PE_HDRSIZE+1]=(PE_OPTIONAL_HEADER_SIZE>>8)&0xff;
+	Set16(&headbuf[PE_HDRSIZE],PE_OPTIONAL_HEADER_SIZE);
 
 	if(isDll)
 	{
@@ -438,73 +433,27 @@ static PSEG createPEHeader(void)
 		i=PE_FILE_EXECUTABLE | PE_FILE_32BIT;
 	}
 
-	headbuf[PE_FLAGS]=i&0xff;
-	headbuf[PE_FLAGS+1]=(i>>8)&0xff;
-
-	headbuf[PE_MAGIC]=PE_MAGICNUM&0xff;
-	headbuf[PE_MAGIC+1]=(PE_MAGICNUM>>8)&0xff;
+	Set16(&headbuf[PE_FLAGS],i);
+	Set16(&headbuf[PE_MAGIC],PE_MAGICNUM);
 
 	headbuf[PE_LMAJOR]=ALINK_MAJOR;
 	headbuf[PE_LMINOR]=ALINK_MINOR;
 
-	headbuf[PE_IMAGEBASE]=imageBase&0xff;
-	headbuf[PE_IMAGEBASE+1]=(imageBase>>8)&0xff;
-	headbuf[PE_IMAGEBASE+2]=(imageBase>>16)&0xff;
-	headbuf[PE_IMAGEBASE+3]=(imageBase>>24)&0xff;
-
-	headbuf[PE_OBJECTALIGN]=objectAlign&0xff;
-	headbuf[PE_OBJECTALIGN+1]=(objectAlign>>8)&0xff;
-	headbuf[PE_OBJECTALIGN+2]=(objectAlign>>16)&0xff;
-	headbuf[PE_OBJECTALIGN+3]=(objectAlign>>24)&0xff;
-
-	headbuf[PE_FILEALIGN]=fileAlign&0xff;
-	headbuf[PE_FILEALIGN+1]=(fileAlign>>8)&0xff;
-	headbuf[PE_FILEALIGN+2]=(fileAlign>>16)&0xff;
-	headbuf[PE_FILEALIGN+3]=(fileAlign>>24)&0xff;
-
-	headbuf[PE_OSMAJOR]=osMajor&0xff;
-	headbuf[PE_OSMAJOR+1]=(osMajor>>8)&0xff;
-
-	headbuf[PE_OSMINOR]=osMinor&0xff;
-	headbuf[PE_OSMINOR+1]=(osMinor>>8)&0xff;
-
-	headbuf[PE_USERMAJOR]=userMajor&0xff;
-	headbuf[PE_USERMAJOR+1]=(userMajor>>8)&0xff;
-
-	headbuf[PE_USERMINOR]=userMinor&0xff;
-	headbuf[PE_USERMINOR+1]=(userMinor>>8)&0xff;
-
-	headbuf[PE_SUBSYSMAJOR]=subSysMajor&0xff;
-	headbuf[PE_SUBSYSMAJOR+1]=(subSysMajor>>8)&0xff;
-
-	headbuf[PE_SUBSYSMINOR]=subSysMinor&0xff;
-	headbuf[PE_SUBSYSMINOR+1]=(subSysMinor>>8)&0xff;
-
-	headbuf[PE_SUBSYSTEM]=subSystem&0xff;
-	headbuf[PE_SUBSYSTEM+1]=(subSystem>>8)&0xff;
-
-	headbuf[PE_NUMRVAS]=PE_NUM_VAS&0xff;
-	headbuf[PE_NUMRVAS+1]=(PE_NUM_VAS>>8)&0xff;
-
-	headbuf[PE_HEAPSIZE]=heapSize&0xff;
-	headbuf[PE_HEAPSIZE+1]=(heapSize>>8)&0xff;
-	headbuf[PE_HEAPSIZE+2]=(heapSize>>16)&0xff;
-	headbuf[PE_HEAPSIZE+3]=(heapSize>>24)&0xff;
-
-	headbuf[PE_HEAPCOMMSIZE]=heapCommitSize&0xff;
-	headbuf[PE_HEAPCOMMSIZE+1]=(heapCommitSize>>8)&0xff;
-	headbuf[PE_HEAPCOMMSIZE+2]=(heapCommitSize>>16)&0xff;
-	headbuf[PE_HEAPCOMMSIZE+3]=(heapCommitSize>>24)&0xff;
-
-	headbuf[PE_STACKSIZE]=stackSize&0xff;
-	headbuf[PE_STACKSIZE+1]=(stackSize>>8)&0xff;
-	headbuf[PE_STACKSIZE+2]=(stackSize>>16)&0xff;
-	headbuf[PE_STACKSIZE+3]=(stackSize>>24)&0xff;
-
-	headbuf[PE_STACKCOMMSIZE]=stackCommitSize&0xff;
-	headbuf[PE_STACKCOMMSIZE+1]=(stackCommitSize>>8)&0xff;
-	headbuf[PE_STACKCOMMSIZE+2]=(stackCommitSize>>16)&0xff;
-	headbuf[PE_STACKCOMMSIZE+3]=(stackCommitSize>>24)&0xff;
+	Set32(&headbuf[PE_IMAGEBASE],imageBase);
+	Set32(&headbuf[PE_OBJECTALIGN],objectAlign);
+	Set32(&headbuf[PE_FILEALIGN],fileAlign);
+	Set16(&headbuf[PE_OSMAJOR],osMajor);
+	Set16(&headbuf[PE_OSMINOR],osMinor);
+	Set16(&headbuf[PE_USERMAJOR],userMajor);
+	Set16(&headbuf[PE_USERMINOR],userMinor);
+	Set16(&headbuf[PE_SUBSYSMAJOR],subSysMajor);
+	Set16(&headbuf[PE_SUBSYSMINOR],subSysMinor);
+	Set16(&headbuf[PE_SUBSYSTEM],subSystem);
+	Set16(&headbuf[PE_NUMRVAS],PE_NUM_VAS);
+	Set32(&headbuf[PE_HEAPSIZE],heapSize);
+	Set32(&headbuf[PE_HEAPCOMMSIZE],heapCommitSize);
+	Set32(&headbuf[PE_STACKSIZE],stackSize);
+	Set32(&headbuf[PE_STACKCOMMSIZE],stackCommitSize);
 
 	if(gotstart)
 	{
@@ -593,26 +542,17 @@ static PSEG createPEHeader(void)
 			k |= WINF_WRITEABLE;
 		if(globalSegs[i]->execute)
 			k |= WINF_EXECUTE;
-		objbuf[PE_OBJECT_FLAGS]=k&0xff;
-		objbuf[PE_OBJECT_FLAGS+1]=(k>>8)&0xff;
-		objbuf[PE_OBJECT_FLAGS+2]=(k>>16)&0xff;
-		objbuf[PE_OBJECT_FLAGS+3]=(k>>24)&0xff;
+		Set32(&objbuf[PE_OBJECT_FLAGS],k);
 
 		k=globalSegs[i]->length;
 		k+=objectAlign-1;
 		k&=0xffffffff-(objectAlign-1);
-		objbuf[PE_OBJECT_VIRTSIZE]=k&0xff;
-		objbuf[PE_OBJECT_VIRTSIZE+1]=(k>>8)&0xff;
-		objbuf[PE_OBJECT_VIRTSIZE+2]=(k>>16)&0xff;
-		objbuf[PE_OBJECT_VIRTSIZE+3]=(k>>24)&0xff;
+		Set32(&objbuf[PE_OBJECT_VIRTSIZE],k);
 
 		k=getInitLength(globalSegs[i]);
 		if(k)
 		{
-			objbuf[PE_OBJECT_RAWSIZE]=k&0xff;
-			objbuf[PE_OBJECT_RAWSIZE+1]=(k>>8)&0xff;
-			objbuf[PE_OBJECT_RAWSIZE+2]=(k>>16)&0xff;
-			objbuf[PE_OBJECT_RAWSIZE+3]=(k>>24)&0xff;
+			Set32(&objbuf[PE_OBJECT_RAWSIZE],k);
 
 			h->relocs=checkRealloc(h->relocs,(h->relocCount+1)*sizeof(RELOC));
 			h->relocs[h->relocCount].tseg=globalSegs[i];
@@ -649,8 +589,7 @@ static PSEG createPEHeader(void)
 		}
 	}
 
-	headbuf[PE_NUMOBJECTS]=j;
-	headbuf[PE_NUMOBJECTS+1]=(j>>8);
+	Set16(&headbuf[PE_NUMOBJECTS],j);
 
 	if(codestart)
 	{
@@ -708,10 +647,7 @@ static PSEG createPEHeader(void)
 		h->relocs[h->relocCount].ofs=PE_IMPORTRVA;
 		h->relocCount++;
 
-		headbuf[PE_IMPORTSIZE]=importSeg->length&0xff;
-		headbuf[PE_IMPORTSIZE+1]=(importSeg->length>>8)&0xff;
-		headbuf[PE_IMPORTSIZE+2]=(importSeg->length>>16)&0xff;
-		headbuf[PE_IMPORTSIZE+3]=(importSeg->length>>24)&0xff;
+		Set32(&headbuf[PE_IMPORTSIZE],importSeg->length);
 	}
 	if(exportSeg)
 	{
@@ -725,10 +661,7 @@ static PSEG createPEHeader(void)
 		h->relocs[h->relocCount].ofs=PE_EXPORTRVA;
 		h->relocCount++;
 
-		headbuf[PE_EXPORTSIZE]=exportSeg->length&0xff;
-		headbuf[PE_EXPORTSIZE+1]=(exportSeg->length>>8)&0xff;
-		headbuf[PE_EXPORTSIZE+2]=(exportSeg->length>>16)&0xff;
-		headbuf[PE_EXPORTSIZE+3]=(exportSeg->length>>24)&0xff;
+		Set32(&headbuf[PE_EXPORTSIZE],exportSeg->length);
 	}
 	if(relocSeg)
 	{
@@ -742,10 +675,7 @@ static PSEG createPEHeader(void)
 		h->relocs[h->relocCount].ofs=PE_FIXUPRVA;
 		h->relocCount++;
 
-		headbuf[PE_FIXUPSIZE]=relocSeg->length&0xff;
-		headbuf[PE_FIXUPSIZE+1]=(relocSeg->length>>8)&0xff;
-		headbuf[PE_FIXUPSIZE+2]=(relocSeg->length>>16)&0xff;
-		headbuf[PE_FIXUPSIZE+3]=(relocSeg->length>>24)&0xff;
+		Set32(&headbuf[PE_FIXUPSIZE],relocSeg->length);
 	}
 	if(resourceSeg)
 	{
@@ -759,10 +689,7 @@ static PSEG createPEHeader(void)
 		h->relocs[h->relocCount].ofs=PE_RESOURCERVA;
 		h->relocCount++;
 
-		headbuf[PE_RESOURCESIZE]=resourceSeg->length&0xff;
-		headbuf[PE_RESOURCESIZE+1]=(resourceSeg->length>>8)&0xff;
-		headbuf[PE_RESOURCESIZE+2]=(resourceSeg->length>>16)&0xff;
-		headbuf[PE_RESOURCESIZE+3]=(resourceSeg->length>>24)&0xff;
+		Set32(&headbuf[PE_RESOURCESIZE],resourceSeg->length);
 	}
 	if(debugSeg && debugDir)
 	{
@@ -776,10 +703,7 @@ static PSEG createPEHeader(void)
 		h->relocs[h->relocCount].ofs=PE_DEBUGRVA;
 		h->relocCount++;
 
-		headbuf[PE_DEBUGSIZE]=debugDir->length&0xff;
-		headbuf[PE_DEBUGSIZE+1]=(debugDir->length>>8)&0xff;
-		headbuf[PE_DEBUGSIZE+2]=(debugDir->length>>16)&0xff;
-		headbuf[PE_DEBUGSIZE+3]=(debugDir->length>>24)&0xff;
+		Set32(&headbuf[PE_DEBUGSIZE],debugDir->length);
 	}
 
 
@@ -794,10 +718,7 @@ static PSEG createPEHeader(void)
 		k+=objectAlign-1;
 		k&=0xffffffff-(objectAlign-1);
 
-		headbuf[PE_IMAGESIZE]=k&0xff;
-		headbuf[PE_IMAGESIZE+1]=(k>>8)&0xff;
-		headbuf[PE_IMAGESIZE+2]=(k>>16)&0xff;
-		headbuf[PE_IMAGESIZE+3]=(k>>24)&0xff;
+		Set32(&headbuf[PE_IMAGESIZE],k);
 
 		h->relocs=checkRealloc(h->relocs,(h->relocCount+1)*sizeof(RELOC));
 		h->relocs[h->relocCount].tseg=lastSeg;
@@ -901,21 +822,14 @@ static BOOL buildPEImports(void)
 			if(!dllList[i].entry[j].name)
 			{
 				k=dllList[i].entry[j].ordinal | PE_ORDINAL_FLAG;
-				lookupEntry->data[0]=k&0xff;
-				lookupEntry->data[1]=(k>>8)&0xff;
-				lookupEntry->data[2]=(k>>16)&0xff;
-				lookupEntry->data[3]=(k>>24)&0xff;
-				thunkEntry->data[0]=k&0xff;
-				thunkEntry->data[1]=(k>>8)&0xff;
-				thunkEntry->data[2]=(k>>16)&0xff;
-				thunkEntry->data[3]=(k>>24)&0xff;
+				Set32(lookupEntry->data,k);
+				Set32(thunkEntry->data,k);
 			}
 			else
 			{
 				hintEntry=createDataBlock(NULL,0,strlen(dllList[i].entry[j].name)+3,2);
 				addData(hintName,hintEntry);
-				hintEntry->data[0]=dllList[i].entry[j].ordinal&0xff;
-				hintEntry->data[1]=(dllList[i].entry[j].ordinal>>8)&0xff;
+				Set16(hintEntry->data,dllList[i].entry[j].ordinal);
 				strcpy(hintEntry->data+2,dllList[i].entry[j].name);
 
 				lookup->relocs=checkRealloc(lookup->relocs,(lookup->relocCount+1)*sizeof(RELOC));
@@ -1128,10 +1042,7 @@ static BOOL buildPEResources(void)
 	typeHeader=createDataBlock(NULL,0,PE_RES_DIRHDR_SIZE,4);
 	addData(typeSeg,typeHeader);
 
-	typeHeader->data[PE_RES_DIRHDR_TIME]=now&0xff;
-	typeHeader->data[PE_RES_DIRHDR_TIME+1]=(now>>8)&0xff;
-	typeHeader->data[PE_RES_DIRHDR_TIME+2]=(now>>16)&0xff;
-	typeHeader->data[PE_RES_DIRHDR_TIME+3]=(now>>24)&0xff;
+	Set32(&typeHeader->data[PE_RES_DIRHDR_TIME],now);
 
 	for(i=0;i<globalResourceCount;++i)
 	{
@@ -1150,21 +1061,16 @@ static BOOL buildPEResources(void)
 			/* store counts of IDs */
 			if(idHeader)
 			{
-				idHeader->data[PE_RES_DIRHDR_NUMNAMES]=nameCount&0xff;
-				idHeader->data[PE_RES_DIRHDR_NUMNAMES+1]=(nameCount>>8)&0xff;
+				Set16(&idHeader->data[PE_RES_DIRHDR_NUMNAMES],nameCount);
 
-				idHeader->data[PE_RES_DIRHDR_NUMIDS]=idCount&0xff;
-				idHeader->data[PE_RES_DIRHDR_NUMIDS+1]=(idCount>>8)&0xff;
+				Set16(&idHeader->data[PE_RES_DIRHDR_NUMIDS],idCount);
 			}
 			/* create new id directory */
 			idHeader=createDataBlock(NULL,0,PE_RES_DIRHDR_SIZE,4);
 			addData(idSeg,idHeader);
 			nameCount=idCount=0;
 
-			idHeader->data[PE_RES_DIRHDR_TIME]=now&0xff;
-			idHeader->data[PE_RES_DIRHDR_TIME+1]=(now>>8)&0xff;
-			idHeader->data[PE_RES_DIRHDR_TIME+2]=(now>>16)&0xff;
-			idHeader->data[PE_RES_DIRHDR_TIME+3]=(now>>24)&0xff;
+			Set32(&idHeader->data[PE_RES_DIRHDR_TIME],now);
 
 			/* new entry in type directory */
 			typeEntry=createDataBlock(NULL,0,PE_RES_DIRENTRY_SIZE,4);
@@ -1176,8 +1082,7 @@ static BOOL buildPEResources(void)
 				j=wstrlen(globalResources[i].typename);
 				nameEntry=createDataBlock(NULL,0,2*(j+1),2);
 				addData(nameSeg,nameEntry);
-				nameEntry->data[0]=j&0xff;
-				nameEntry->data[1]=(j>>8)&0xff;
+				Set16(nameEntry->data,j);
 				memcpy(nameEntry->data+2,globalResources[i].typename,2*j);
 
 				typeEntry->data[PE_RES_DIRENTRY_ID+3]=0x80;
@@ -1195,10 +1100,7 @@ static BOOL buildPEResources(void)
 			}
 			else
 			{
-				typeEntry->data[PE_RES_DIRENTRY_ID]=globalResources[i].typeid&0xff;
-				typeEntry->data[PE_RES_DIRENTRY_ID+1]=(globalResources[i].typeid>>8)&0xff;
-				typeEntry->data[PE_RES_DIRENTRY_ID+2]=(globalResources[i].typeid>>16)&0xff;
-				typeEntry->data[PE_RES_DIRENTRY_ID+3]=(globalResources[i].typeid>>24)&0xff;
+				Set32(&typeEntry->data[PE_RES_DIRENTRY_ID],globalResources[i].typeid);
 				typeidCount++;
 			}
 			typeEntry->data[PE_RES_DIRENTRY_RVA+3]=0x80; /* set high bit of RVA, to indicate subdirectory */
@@ -1221,18 +1123,14 @@ static BOOL buildPEResources(void)
 			/* store counts of languages */
 			if(langHeader)
 			{
-				langHeader->data[PE_RES_DIRHDR_NUMIDS]=langCount&0xff;
-				langHeader->data[PE_RES_DIRHDR_NUMIDS+1]=(langCount>>8)&0xff;
+				Set16(&langHeader->data[PE_RES_DIRHDR_NUMIDS],langCount);
 			}
 			/* create new lang directory */
 			langHeader=createDataBlock(NULL,0,PE_RES_DIRHDR_SIZE,4);
 			addData(langSeg,langHeader);
 			langCount=0;
 
-			langHeader->data[PE_RES_DIRHDR_TIME]=now&0xff;
-			langHeader->data[PE_RES_DIRHDR_TIME+1]=(now>>8)&0xff;
-			langHeader->data[PE_RES_DIRHDR_TIME+2]=(now>>16)&0xff;
-			langHeader->data[PE_RES_DIRHDR_TIME+3]=(now>>24)&0xff;
+			Set32(&langHeader->data[PE_RES_DIRHDR_TIME],now);
 
 			/* new entry in id directory */
 			idEntry=createDataBlock(NULL,0,PE_RES_DIRENTRY_SIZE,4);
@@ -1244,8 +1142,7 @@ static BOOL buildPEResources(void)
 				j=wstrlen(globalResources[i].name);
 				nameEntry=createDataBlock(NULL,0,2*(j+1),2);
 				addData(nameSeg,nameEntry);
-				nameEntry->data[0]=j&0xff;
-				nameEntry->data[1]=(j>>8)&0xff;
+				Set16(nameEntry->data,j);
 				memcpy(nameEntry->data+2,globalResources[i].name,2*j);
 
 				idEntry->data[PE_RES_DIRENTRY_ID+3]=0x80;
@@ -1263,10 +1160,7 @@ static BOOL buildPEResources(void)
 			}
 			else
 			{
-				idEntry->data[PE_RES_DIRENTRY_ID]=globalResources[i].id&0xff;
-				idEntry->data[PE_RES_DIRENTRY_ID+1]=(globalResources[i].id>>8)&0xff;
-				idEntry->data[PE_RES_DIRENTRY_ID+2]=(globalResources[i].id>>16)&0xff;
-				idEntry->data[PE_RES_DIRENTRY_ID+3]=(globalResources[i].id>>24)&0xff;
+				Set32(&idEntry->data[PE_RES_DIRENTRY_ID],globalResources[i].id);
 				idCount++;
 			}
 			idEntry->data[PE_RES_DIRENTRY_RVA+3]=0x80; /* set high bit of RVA, to indicate subdirectory */
@@ -1286,20 +1180,14 @@ static BOOL buildPEResources(void)
 		/* new entry in id directory */
 		langEntry=createDataBlock(NULL,0,PE_RES_DIRENTRY_SIZE,4);
 		addData(langSeg,langEntry);
-		langEntry->data[PE_RES_DIRENTRY_ID]=globalResources[i].languageid&0xff;
-		langEntry->data[PE_RES_DIRENTRY_ID+1]=(globalResources[i].languageid>>8)&0xff;
-		langEntry->data[PE_RES_DIRENTRY_ID+2]=(globalResources[i].languageid>>16)&0xff;
-		langEntry->data[PE_RES_DIRENTRY_ID+3]=(globalResources[i].languageid>>24)&0xff;
+		Set32(&langEntry->data[PE_RES_DIRENTRY_ID],globalResources[i].languageid);
 		langCount++;
 
 		/* new data entry */
 		dataEntry=createDataBlock(NULL,0,PE_RES_DATAENTRY_SIZE,4);
 		addData(dataSeg,dataEntry);
 
-		dataEntry->data[PE_RES_DATAENTRY_LENGTH]=globalResources[i].length&0xff;
-		dataEntry->data[PE_RES_DATAENTRY_LENGTH+1]=(globalResources[i].length>>8)&0xff;
-		dataEntry->data[PE_RES_DATAENTRY_LENGTH+2]=(globalResources[i].length>>16)&0xff;
-		dataEntry->data[PE_RES_DATAENTRY_LENGTH+3]=(globalResources[i].length>>24)&0xff;
+		Set32(&dataEntry->data[PE_RES_DATAENTRY_LENGTH],globalResources[i].length);
 
 		realData=createDataBlock(globalResources[i].data,0,globalResources[i].length,4);
 		addData(realDataSeg,realData);
@@ -1329,22 +1217,15 @@ static BOOL buildPEResources(void)
 
 	if(idHeader)
 	{
-		idHeader->data[PE_RES_DIRHDR_NUMNAMES]=nameCount&0xff;
-		idHeader->data[PE_RES_DIRHDR_NUMNAMES+1]=(nameCount>>8)&0xff;
-
-		idHeader->data[PE_RES_DIRHDR_NUMIDS]=idCount&0xff;
-		idHeader->data[PE_RES_DIRHDR_NUMIDS+1]=(idCount>>8)&0xff;
+		Set16(&idHeader->data[PE_RES_DIRHDR_NUMNAMES],nameCount);
+		Set16(&idHeader->data[PE_RES_DIRHDR_NUMIDS],idCount);
 	}
 	if(langHeader)
 	{
-		langHeader->data[PE_RES_DIRHDR_NUMIDS]=langCount&0xff;
-		langHeader->data[PE_RES_DIRHDR_NUMIDS+1]=(langCount>>8)&0xff;
+		Set16(&langHeader->data[PE_RES_DIRHDR_NUMIDS],langCount);
 	}
-	typeHeader->data[PE_RES_DIRHDR_NUMNAMES]=typenameCount&0xff;
-	typeHeader->data[PE_RES_DIRHDR_NUMNAMES+1]=(typenameCount>>8)&0xff;
-
-	typeHeader->data[PE_RES_DIRHDR_NUMIDS]=typeidCount&0xff;
-	typeHeader->data[PE_RES_DIRHDR_NUMIDS+1]=(typeidCount>>8)&0xff;
+	Set16(&typeHeader->data[PE_RES_DIRHDR_NUMNAMES],typenameCount);
+	Set16(&typeHeader->data[PE_RES_DIRHDR_NUMIDS],typeidCount);
 
 	return TRUE;
 }
@@ -1536,8 +1417,7 @@ static BOOL buildPEExports(PCHAR name)
 			ordEntry=createDataBlock(NULL,0,2,1);
 			addData(ordTable,ordEntry);
 
-			ordEntry->data[0]=(globalExports[i]->ordinal-minOrd)&0xff;
-			ordEntry->data[1]=((globalExports[i]->ordinal-minOrd)>>8)&0xff;
+			Set16(ordEntry->data,(globalExports[i]->ordinal-minOrd));
 
 			/* add a reloc to fill in the name seg entry */
 			nameTable->relocs=checkRealloc(nameTable->relocs,(nameTable->relocCount+1)*sizeof(RELOC));
@@ -1555,25 +1435,10 @@ static BOOL buildPEExports(PCHAR name)
 
 	time(&now);
 
-	hdr->data[PE_EXPORT_TIME]=now&0xff;
-	hdr->data[PE_EXPORT_TIME+1]=(now>>8)&0xff;
-	hdr->data[PE_EXPORT_TIME+2]=(now>>16)&0xff;
-	hdr->data[PE_EXPORT_TIME+3]=(now>>24)&0xff;
-
-	hdr->data[PE_EXPORT_NUMEXPORTS]=numExports&0xff;
-	hdr->data[PE_EXPORT_NUMEXPORTS+1]=(numExports>>8)&0xff;
-	hdr->data[PE_EXPORT_NUMEXPORTS+2]=(numExports>>16)&0xff;
-	hdr->data[PE_EXPORT_NUMEXPORTS+3]=(numExports>>24)&0xff;
-
-	hdr->data[PE_EXPORT_NUMNAMES]=numNames&0xff;
-	hdr->data[PE_EXPORT_NUMNAMES+1]=(numNames>>8)&0xff;
-	hdr->data[PE_EXPORT_NUMNAMES+2]=(numNames>>16)&0xff;
-	hdr->data[PE_EXPORT_NUMNAMES+3]=(numNames>>24)&0xff;
-
-	hdr->data[PE_EXPORT_ORDINALBASE]=minOrd&0xff;
-	hdr->data[PE_EXPORT_ORDINALBASE+1]=(minOrd>>8)&0xff;
-	hdr->data[PE_EXPORT_ORDINALBASE+2]=(minOrd>>16)&0xff;
-	hdr->data[PE_EXPORT_ORDINALBASE+3]=(minOrd>>24)&0xff;
+	Set32(&hdr->data[PE_EXPORT_TIME],now);
+	Set32(&hdr->data[PE_EXPORT_NUMEXPORTS],numExports);
+	Set32(&hdr->data[PE_EXPORT_NUMNAMES],numNames);
+	Set32(&hdr->data[PE_EXPORT_ORDINALBASE],minOrd);
 
 	addSeg(exportSeg,nameTable);
 	addSeg(exportSeg,addressTable);
@@ -1669,10 +1534,7 @@ static PSEG getSegFixups(PSEG s)
 				blockCount*=2; /* two bytes per entry */
 				blockCount+=8; /* plus eight bytes for the header */
 
-				blockHeader->data[PE_RELOC_BLOCKSIZE]=blockCount&0xff;
-				blockHeader->data[PE_RELOC_BLOCKSIZE+1]=(blockCount>>8)&0xff;
-				blockHeader->data[PE_RELOC_BLOCKSIZE+2]=(blockCount>>16)&0xff;
-				blockHeader->data[PE_RELOC_BLOCKSIZE+3]=(blockCount>>24)&0xff;
+				Set32(&blockHeader->data[PE_RELOC_BLOCKSIZE],blockCount);
 			}
 			blockStart=s->relocs[i].ofs;
 			blockCount=0;
@@ -1695,8 +1557,7 @@ static PSEG getSegFixups(PSEG s)
 		blockEntry=createDataBlock(NULL,0,PE_RELOC_ENTRY_SIZE,1);
 		addData(r,blockEntry);
 
-		blockEntry->data[0]=(s->relocs[i].ofs-blockStart)&0xff;
-		blockEntry->data[1]=((s->relocs[i].ofs-blockStart)>>8)&0x0f;
+		Set16(blockEntry->data,(s->relocs[i].ofs-blockStart));
 
 		switch(s->relocs[i].rtype)
 		{
@@ -1726,10 +1587,7 @@ static PSEG getSegFixups(PSEG s)
 		blockCount*=2; /* two bytes per entry */
 		blockCount+=8; /* plus eight bytes for the header */
 
-		blockHeader->data[PE_RELOC_BLOCKSIZE]=blockCount&0xff;
-		blockHeader->data[PE_RELOC_BLOCKSIZE+1]=(blockCount>>8)&0xff;
-		blockHeader->data[PE_RELOC_BLOCKSIZE+2]=(blockCount>>16)&0xff;
-		blockHeader->data[PE_RELOC_BLOCKSIZE+3]=(blockCount>>24)&0xff;
+		Set32(&blockHeader->data[PE_RELOC_BLOCKSIZE],blockCount);
 	}
 
 	for(i=0;i<s->contentCount;++i)
@@ -1871,8 +1729,7 @@ static PSEG buildCodeViewInfo(PCHAR outname)
 	addData(dirList,subdirEntry);
 	numSubdirs++;
 
-	subdirEntry->data[PE_DEBUG_SUBDIR_TYPE]=PE_DEBUG_SUB_MODULE&0xff;
-	subdirEntry->data[PE_DEBUG_SUBDIR_TYPE+1]=(PE_DEBUG_SUB_MODULE>>8)&0xff;
+	Set16(&subdirEntry->data[PE_DEBUG_SUBDIR_TYPE],PE_DEBUG_SUB_MODULE);
 	subdirEntry->data[PE_DEBUG_SUBDIR_MODULE]=1;
 
 	dataSeg=createSection("module map",NULL,NULL,NULL,0,4);
@@ -1904,10 +1761,7 @@ static PSEG buildCodeViewInfo(PCHAR outname)
 		data=createDataBlock(NULL,0,12,4);
 		addData(dataSeg,data);
 
-		data->data[8]=globalSegs[i]->length&0xff;
-		data->data[9]=(globalSegs[i]->length>>8)&0xff;
-		data->data[10]=(globalSegs[i]->length>>16)&0xff;
-		data->data[11]=(globalSegs[i]->length>>24)&0xff;
+		Set32(&data->data[8],globalSegs[i]->length);
 
 
 		/* add reloc to get segment number and seg offset */
@@ -1948,10 +1802,7 @@ static PSEG buildCodeViewInfo(PCHAR outname)
 	data->data[0]=strlen(name);
 	memcpy(data->data+1,name,strlen(name));
 
-	subdirEntry->data[PE_DEBUG_SUBDIR_LENGTH]=dataSeg->length&0xff;
-	subdirEntry->data[PE_DEBUG_SUBDIR_LENGTH+1]=(dataSeg->length>>8)&0xff;
-	subdirEntry->data[PE_DEBUG_SUBDIR_LENGTH+2]=(dataSeg->length>>16)&0xff;
-	subdirEntry->data[PE_DEBUG_SUBDIR_LENGTH+3]=(dataSeg->length>>24)&0xff;
+	Set32(&subdirEntry->data[PE_DEBUG_SUBDIR_LENGTH],dataSeg->length);
 	dirList->relocs=checkRealloc(dirList->relocs,(dirList->relocCount+1)*sizeof(RELOC));
 	dirList->relocs[dirList->relocCount].base=REL_FRAME;
 	dirList->relocs[dirList->relocCount].fseg=debugData;
@@ -1968,8 +1819,7 @@ static PSEG buildCodeViewInfo(PCHAR outname)
 	addData(dirList,subdirEntry);
 	numSubdirs++;
 
-	subdirEntry->data[PE_DEBUG_SUBDIR_TYPE]=PE_DEBUG_SUB_SRCMODULE&0xff;
-	subdirEntry->data[PE_DEBUG_SUBDIR_TYPE+1]=(PE_DEBUG_SUB_SRCMODULE>>8)&0xff;
+	Set16(&subdirEntry->data[PE_DEBUG_SUBDIR_TYPE],PE_DEBUG_SUB_SRCMODULE);
 	subdirEntry->data[PE_DEBUG_SUBDIR_MODULE]=1;
 
 	dataSeg=createSection("line number map",NULL,NULL,NULL,0,4);
@@ -2023,16 +1873,13 @@ static PSEG buildCodeViewInfo(PCHAR outname)
 	symHeader=createDataBlock(NULL,0,4+4*numFiles+10*numSections,4);
 	addData(dataSeg,symHeader);
 	/* store count of files and sections */
-	symHeader->data[0]=numFiles&0xff;
-	symHeader->data[1]=(numFiles>>8)&0xff;
-	symHeader->data[2]=numSections&0xff;
-	symHeader->data[3]=(numSections>>8)&0xff;
+	Set16(&symHeader->data[0],numFiles);
+	Set16(&symHeader->data[2],numSections);
 
 	/* fill in section reference list */
 	for(k=4+4*numFiles+8*numSections,i=0;i<numSections;++i,k+=2)
 	{
-		symHeader->data[k]=sectionList[i]&0xff;
-		symHeader->data[k+1]=(sectionList[i]>>8)&0xff;
+		Set16(&symHeader->data[k],sectionList[i]);
 	}
 
 	/* free section list data */
@@ -2057,10 +1904,7 @@ static PSEG buildCodeViewInfo(PCHAR outname)
 		addSeg(dataSeg,lineData);
 
 		/* get offset of line data for this file */
-		symHeader->data[4+4*i]=lineData->base&0xff;
-		symHeader->data[4+4*i+1]=(lineData->base>>8)&0xff;
-		symHeader->data[4+4*i+2]=(lineData->base>>16)&0xff;
-		symHeader->data[4+4*i+3]=(lineData->base>>24)&0xff;
+		Set32(&symHeader->data[4+4*i],lineData->base);
 
 		/* count number of regions in this file */
 		numFileSections=0;
@@ -2072,8 +1916,7 @@ static PSEG buildCodeViewInfo(PCHAR outname)
 		/* build section table for this file */
 		segHeader=createDataBlock(NULL,0,4+12*numFileSections+1+strlen(name),4);
 		addData(lineData,segHeader);
-		segHeader->data[0]=numFileSections&0xff;
-		segHeader->data[1]=(numFileSections>>8)&0xff;
+		Set16(&segHeader->data[0],numFileSections);
 		/* which finishes with the file name */
 		segHeader->data[4+12*numFileSections]=strlen(name)&0xff;
 		// segHeader->data[4+12*numFileSections+1]=(strlen(name)>>8)&0xff;
@@ -2091,15 +1934,10 @@ static PSEG buildCodeViewInfo(PCHAR outname)
 			addData(lineData,data);
 
 			/* get offset of line data for this section */
-			segHeader->data[4+4*k]=(lineData->base+data->offset)&0xff;
-			segHeader->data[4+4*k+1]=((lineData->base+data->offset)>>8)&0xff;
-			segHeader->data[4+4*k+2]=((lineData->base+data->offset)>>16)&0xff;
-			segHeader->data[4+4*k+3]=((lineData->base+data->offset)>>24)&0xff;
+			Set32(&segHeader->data[4+4*k],lineData->base+data->offset);
 
-			data->data[0]=curseg&0xff;
-			data->data[1]=(curseg>>8)&0xff;
-			data->data[2]=numLines&0xff;
-			data->data[3]=(numLines>>8)&0xff;
+			Set16(&data->data[0],curseg);
+			Set16(&data->data[2],numLines);
 
 			minSegOfs=UINT_MAX;
 			maxSegOfs=0;
@@ -2110,24 +1948,14 @@ static PSEG buildCodeViewInfo(PCHAR outname)
 				if(debugLines[regions[j].start+n].ofs<minSegOfs) minSegOfs=debugLines[regions[j].start+n].ofs;
 				if(debugLines[regions[j].start+n].ofs>maxSegOfs) maxSegOfs=debugLines[regions[j].start+n].ofs;
 
-				data->data[4+4*n]=debugLines[regions[j].start+n].ofs&0xff;
-				data->data[4+4*n+1]=(debugLines[regions[j].start+n].ofs>>8)&0xff;
-				data->data[4+4*n+2]=(debugLines[regions[j].start+n].ofs>>16)&0xff;
-				data->data[4+4*n+3]=(debugLines[regions[j].start+n].ofs>>24)&0xff;
-				data->data[4+4*numLines+2*n]=debugLines[regions[j].start+n].num&0xff;
-				data->data[4+4*numLines+2*n+1]=(debugLines[regions[j].start+n].num>>8)&0xff;
+				Set32(&data->data[4+4*n],debugLines[regions[j].start+n].ofs);
+				Set16(&data->data[4+4*numLines+2*n],debugLines[regions[j].start+n].num);
 			}
 			/* if a valid extent, fill that in too */
 			if(minSegOfs<=maxSegOfs)
 			{
-				segHeader->data[4+4*numFileSections+8*k]=minSegOfs&0xff;
-				segHeader->data[4+4*numFileSections+8*k+1]=(minSegOfs>>8)&0xff;
-				segHeader->data[4+4*numFileSections+8*k+2]=(minSegOfs>>16)&0xff;
-				segHeader->data[4+4*numFileSections+8*k+3]=(minSegOfs>>24)&0xff;
-				segHeader->data[4+4*numFileSections+8*k+4]=maxSegOfs&0xff;
-				segHeader->data[4+4*numFileSections+8*k+5]=(maxSegOfs>>8)&0xff;
-				segHeader->data[4+4*numFileSections+8*k+6]=(maxSegOfs>>16)&0xff;
-				segHeader->data[4+4*numFileSections+8*k+7]=(maxSegOfs>>24)&0xff;
+				Set32(&segHeader->data[4+4*numFileSections+8*k],minSegOfs);
+				Set32(&segHeader->data[4+4*numFileSections+8*k+4],maxSegOfs);
 				/* extend size of encompassing section too */
 				for(n=0;n<numSections;++n)
 				{
@@ -2144,23 +1972,14 @@ static PSEG buildCodeViewInfo(PCHAR outname)
 	{
 		if(totalMinSegOfs[k]<=totalMaxSegOfs[k])
 		{
-			symHeader->data[4+4*numFiles+8*k]=totalMinSegOfs[k]&0xff;
-			symHeader->data[4+4*numFiles+8*k+1]=(totalMinSegOfs[k]>>8)&0xff;
-			symHeader->data[4+4*numFiles+8*k+2]=(totalMinSegOfs[k]>>16)&0xff;
-			symHeader->data[4+4*numFiles+8*k+3]=(totalMinSegOfs[k]>>24)&0xff;
-			symHeader->data[4+4*numFiles+8*k+4]=totalMaxSegOfs[k]&0xff;
-			symHeader->data[4+4*numFiles+8*k+5]=(totalMaxSegOfs[k]>>8)&0xff;
-			symHeader->data[4+4*numFiles+8*k+6]=(totalMaxSegOfs[k]>>16)&0xff;
-			symHeader->data[4+4*numFiles+8*k+7]=(totalMaxSegOfs[k]>>24)&0xff;
+			Set32(&symHeader->data[4+4*numFiles+8*k],totalMinSegOfs[k]);
+			Set32(&symHeader->data[4+4*numFiles+8*k+4],totalMaxSegOfs[k]);
 		}
 	}
 
 	/* tidy up subdir entry */
 
-	subdirEntry->data[PE_DEBUG_SUBDIR_LENGTH]=dataSeg->length&0xff;
-	subdirEntry->data[PE_DEBUG_SUBDIR_LENGTH+1]=(dataSeg->length>>8)&0xff;
-	subdirEntry->data[PE_DEBUG_SUBDIR_LENGTH+2]=(dataSeg->length>>16)&0xff;
-	subdirEntry->data[PE_DEBUG_SUBDIR_LENGTH+3]=(dataSeg->length>>24)&0xff;
+	Set32(&subdirEntry->data[PE_DEBUG_SUBDIR_LENGTH],dataSeg->length);
 	dirList->relocs=checkRealloc(dirList->relocs,(dirList->relocCount+1)*sizeof(RELOC));
 	dirList->relocs[dirList->relocCount].base=REL_FRAME;
 	dirList->relocs[dirList->relocCount].fseg=debugData;
@@ -2177,10 +1996,8 @@ static PSEG buildCodeViewInfo(PCHAR outname)
 	addData(dirList,subdirEntry);
 	numSubdirs++;
 
-	subdirEntry->data[PE_DEBUG_SUBDIR_TYPE]=PE_DEBUG_SUB_GLOBALPUB&0xff;
-	subdirEntry->data[PE_DEBUG_SUBDIR_TYPE+1]=(PE_DEBUG_SUB_GLOBALPUB>>8)&0xff;
-	subdirEntry->data[PE_DEBUG_SUBDIR_MODULE]=0xff;
-	subdirEntry->data[PE_DEBUG_SUBDIR_MODULE+1]=0xff;
+	Set16(&subdirEntry->data[PE_DEBUG_SUBDIR_TYPE],PE_DEBUG_SUB_GLOBALPUB);
+	Set16(&subdirEntry->data[PE_DEBUG_SUBDIR_MODULE],0xffff);
 
 
 	dataSeg=createSection("symbol Data",NULL,NULL,NULL,0,4);
@@ -2206,8 +2023,7 @@ static PSEG buildCodeViewInfo(PCHAR outname)
 		addData(dataSeg,data);
 
 		/* store length of block */
-		data->data[0]=(j-2)&0xff;
-		data->data[1]=((j-2)>>8)&0xff;
+		Set16(data->data,(j-2));
 		/* public symbol */
 		data->data[2]=3;
 		data->data[3]=2;
@@ -2244,16 +2060,10 @@ static PSEG buildCodeViewInfo(PCHAR outname)
 		dataSeg->relocCount++;
 	}
 
-	symHeader->data[4]=(dataSeg->length-16)&0xff;
-	symHeader->data[5]=((dataSeg->length-16)>>8)&0xff;
-	symHeader->data[6]=((dataSeg->length-16)>>16)&0xff;
-	symHeader->data[7]=((dataSeg->length-16)>>24)&0xff;
+	Set32(&symHeader->data[4],(dataSeg->length-16));
 
 
-	subdirEntry->data[PE_DEBUG_SUBDIR_LENGTH]=dataSeg->length&0xff;
-	subdirEntry->data[PE_DEBUG_SUBDIR_LENGTH+1]=(dataSeg->length>>8)&0xff;
-	subdirEntry->data[PE_DEBUG_SUBDIR_LENGTH+2]=(dataSeg->length>>16)&0xff;
-	subdirEntry->data[PE_DEBUG_SUBDIR_LENGTH+3]=(dataSeg->length>>24)&0xff;
+	Set32(&subdirEntry->data[PE_DEBUG_SUBDIR_LENGTH],dataSeg->length);
 
 	dirList->relocs=checkRealloc(dirList->relocs,(dirList->relocCount+1)*sizeof(RELOC));
 	dirList->relocs[dirList->relocCount].base=REL_FRAME;
@@ -2273,10 +2083,8 @@ static PSEG buildCodeViewInfo(PCHAR outname)
 		addData(dirList,subdirEntry);
 		numSubdirs++;
 
-		subdirEntry->data[PE_DEBUG_SUBDIR_TYPE]=PE_DEBUG_SUB_FILEINDEX&0xff;
-		subdirEntry->data[PE_DEBUG_SUBDIR_TYPE+1]=(PE_DEBUG_SUB_FILEINDEX>>8)&0xff;
-		subdirEntry->data[PE_DEBUG_SUBDIR_MODULE]=0xff;
-		subdirEntry->data[PE_DEBUG_SUBDIR_MODULE+1]=0xff;
+		Set16(&subdirEntry->data[PE_DEBUG_SUBDIR_TYPE],PE_DEBUG_SUB_FILEINDEX);
+		Set16(&subdirEntry->data[PE_DEBUG_SUBDIR_MODULE],0xffff);
 
 		dataSeg=createSection("File Index",NULL,NULL,NULL,0,4);
 		dataSeg->internal=TRUE;
@@ -2286,27 +2094,19 @@ static PSEG buildCodeViewInfo(PCHAR outname)
 		addData(dataSeg,symHeader);
 
 		symHeader->data[0]=1;
-		symHeader->data[2]=numFiles&0xff;
-		symHeader->data[3]=(numFiles>>8)&0xff;
-		symHeader->data[6]=numFiles&0xff;
-		symHeader->data[7]=(numFiles>>8)&0xff;
+		Set16(&symHeader->data[2],numFiles);
+		Set16(&symHeader->data[6],numFiles);
 
 		for(i=0;i<numFiles;++i)
 		{
 			name=fileList[i];
 			data=createDataBlock(name,0,strlen(name)+1,1);
 			addData(dataSeg,data);
-			symHeader->data[8+i*4]=(data->offset-(8+4*numFiles))&0xff;
-			symHeader->data[8+i*4+1]=((data->offset-(8+4*numFiles))>>8)&0xff;
-			symHeader->data[8+i*4+2]=((data->offset-(8+4*numFiles))>>16)&0xff;
-			symHeader->data[8+i*4+3]=((data->offset-(8+4*numFiles))>>24)&0xff;
+			Set32(&symHeader->data[8+i*4],(data->offset-(8+4*numFiles)));
 		}
 
 		/* tidy up */
-		subdirEntry->data[PE_DEBUG_SUBDIR_LENGTH]=dataSeg->length&0xff;
-		subdirEntry->data[PE_DEBUG_SUBDIR_LENGTH+1]=(dataSeg->length>>8)&0xff;
-		subdirEntry->data[PE_DEBUG_SUBDIR_LENGTH+2]=(dataSeg->length>>16)&0xff;
-		subdirEntry->data[PE_DEBUG_SUBDIR_LENGTH+3]=(dataSeg->length>>24)&0xff;
+		Set32(&subdirEntry->data[PE_DEBUG_SUBDIR_LENGTH],dataSeg->length);
 
 		dirList->relocs=checkRealloc(dirList->relocs,(dirList->relocCount+1)*sizeof(RELOC));
 		dirList->relocs[dirList->relocCount].base=REL_FRAME;
@@ -2325,10 +2125,8 @@ static PSEG buildCodeViewInfo(PCHAR outname)
 	addData(dirList,subdirEntry);
 	numSubdirs++;
 
-	subdirEntry->data[PE_DEBUG_SUBDIR_TYPE]=PE_DEBUG_SUB_SEGMAP&0xff;
-	subdirEntry->data[PE_DEBUG_SUBDIR_TYPE+1]=(PE_DEBUG_SUB_SEGMAP>>8)&0xff;
-	subdirEntry->data[PE_DEBUG_SUBDIR_MODULE]=0xff;
-	subdirEntry->data[PE_DEBUG_SUBDIR_MODULE+1]=0xff;
+	Set16(&subdirEntry->data[PE_DEBUG_SUBDIR_TYPE],PE_DEBUG_SUB_SEGMAP);
+	Set16(&subdirEntry->data[PE_DEBUG_SUBDIR_MODULE],0xffff);
 
 
 	dataSeg=createSection("Segment map",NULL,NULL,NULL,0,4);
@@ -2360,15 +2158,11 @@ static PSEG buildCodeViewInfo(PCHAR outname)
 
 
 		/* store section number */
-		data->data[6]=j&0xff;
-		data->data[7]=(j>>8)&0xff;
+		Set16(&data->data[6],j);
 
 
 		/* store length */
-		data->data[16]=globalSegs[i]->length&0xff;
-		data->data[17]=(globalSegs[i]->length>>8)&0xff;
-		data->data[18]=(globalSegs[i]->length>>16)&0xff;
-		data->data[19]=(globalSegs[i]->length>>24)&0xff;
+		Set32(&data->data[16],globalSegs[i]->length);
 
 
 		/* add reloc to get segment number and seg offset */
@@ -2395,15 +2189,10 @@ static PSEG buildCodeViewInfo(PCHAR outname)
 	}
 
 	/* store number of segments in map */
-	symHeader->data[0]=j&0xff;
-	symHeader->data[1]=(j>>8)&0xff;
-	symHeader->data[2]=j&0xff;
-	symHeader->data[3]=(j>>8)&0xff;
+	Set16(&symHeader->data[0],j);
+	Set16(&symHeader->data[2],j);
 
-	subdirEntry->data[PE_DEBUG_SUBDIR_LENGTH]=dataSeg->length&0xff;
-	subdirEntry->data[PE_DEBUG_SUBDIR_LENGTH+1]=(dataSeg->length>>8)&0xff;
-	subdirEntry->data[PE_DEBUG_SUBDIR_LENGTH+2]=(dataSeg->length>>16)&0xff;
-	subdirEntry->data[PE_DEBUG_SUBDIR_LENGTH+3]=(dataSeg->length>>24)&0xff;
+	Set32(&subdirEntry->data[PE_DEBUG_SUBDIR_LENGTH],dataSeg->length);
 
 	dirList->relocs=checkRealloc(dirList->relocs,(dirList->relocCount+1)*sizeof(RELOC));
 	dirList->relocs[dirList->relocCount].base=REL_FRAME;
@@ -2453,18 +2242,12 @@ static BOOL buildPEDebug(PCHAR name)
 		dirEntry=createDataBlock(NULL,0,PE_DEBUGDIR_SIZE,1);
 		addData(debugDir,dirEntry);
 		time(&now);
-		dirEntry->data[4]=now&0xff;
-		dirEntry->data[5]=(now>>8)&0xff;
-		dirEntry->data[6]=(now>>16)&0xff;
-		dirEntry->data[7]=(now>>24)&0xff;
+		Set32(&dirEntry->data[4],now);
 
 		dirEntry->data[12]=PE_DEBUG_CODEVIEW;
 
 		/* add length entry */
-		dirEntry->data[16]=debugData->length&0xff;
-		dirEntry->data[17]=(debugData->length>>8)&0xff;
-		dirEntry->data[18]=(debugData->length>>16)&0xff;
-		dirEntry->data[19]=(debugData->length>>24)&0xff;
+		Set32(&dirEntry->data[16],debugData->length);
 
 		/* add "pointer to real data" relocs to directory entry */
 		debugDir->relocs=checkRealloc(debugDir->relocs,(debugDir->relocCount+2)*sizeof(RELOC));
@@ -2615,10 +2398,7 @@ BOOL PEFinalise(PCHAR name)
 
 	addSeg(h,header=createPEHeader());
 
-	stubBlock->data[PE_SIGNATURE_OFFSET]=header->base&0xff;
-	stubBlock->data[PE_SIGNATURE_OFFSET+1]=(header->base>>8)&0xff;
-	stubBlock->data[PE_SIGNATURE_OFFSET+2]=(header->base>>16)&0xff;
-	stubBlock->data[PE_SIGNATURE_OFFSET+3]=(header->base>>24)&0xff;
+	Set32(&stubBlock->data[PE_SIGNATURE_OFFSET],header->base);
 
 	spaceList=checkMalloc(sizeof(PSEG));
 	spaceList[0]=a;
@@ -2647,10 +2427,7 @@ BOOL PEFinalise(PCHAR name)
 	fp=0;
 	i=calcSegChecksum(a,&fp);
 	i+=fp;
-	header->contentList[0].data->data[PE_CHECKSUM]=i&0xff;
-	header->contentList[0].data->data[PE_CHECKSUM+1]=(i>>8)&0xff;
-	header->contentList[0].data->data[PE_CHECKSUM+2]=(i>>16)&0xff;
-	header->contentList[0].data->data[PE_CHECKSUM+3]=(i>>24)&0xff;
+	Set32(&header->contentList[0].data->data[PE_CHECKSUM],i);
 
 	return TRUE;
 }

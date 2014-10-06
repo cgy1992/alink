@@ -213,13 +213,11 @@ static PSEG buildEXEHeader(void)
 	headbuf[EXE_SIGNATURE+1]='Z';
 	headbuf[EXE_RELOCPOS]=EXE_HEADERSIZE;
 
-	headbuf[EXE_RELCOUNT]=relCount&0xff;
-	headbuf[EXE_RELCOUNT+1]=relCount>>8;
+	Set16(&headbuf[EXE_RELCOUNT],relCount);
 
 	i=bufSize+0xf;
 	i>>=4;
-	headbuf[EXE_HEADSIZE]=i&0xff;
-	headbuf[EXE_HEADSIZE+1]=i>>8;
+	Set16(&headbuf[EXE_HEADSIZE],i);
 
 	gotstack=getStack(spaceList[1],&sseg,&sofs);
 
@@ -235,8 +233,7 @@ static PSEG buildEXEHeader(void)
 	k+=(bufSize+0xf)&0xfffffff0;
 	/* store file size */
 	i=k%512;
-	headbuf[EXE_NUMBYTES]=i&0xff;
-	headbuf[EXE_NUMBYTES+1]=i>>8;
+	Set16(&headbuf[EXE_NUMBYTES],i);
 
 	i=(k+0x1ff)>>9;
 	if(i>65535)
@@ -244,8 +241,7 @@ static PSEG buildEXEHeader(void)
 		addError("File too large");
 		return FALSE;
 	}
-	headbuf[EXE_NUMPAGES]=i&0xff;
-	headbuf[EXE_NUMPAGES+1]=i>>8;
+	Set16(&headbuf[EXE_NUMPAGES],i);
 
 	/* get total amount of memory required */
 	i=spaceList[1]->length+((bufSize+0xf)&0xfffffff0);
@@ -267,10 +263,8 @@ static PSEG buildEXEHeader(void)
 		maxalloc=i;
 	}
 
-	headbuf[EXE_MINALLOC]=i&0xff;
-	headbuf[EXE_MINALLOC+1]=(i>>8)&0xff;
-	headbuf[EXE_MAXALLOC]=maxalloc&0xff;
-	headbuf[EXE_MAXALLOC+1]=maxalloc>>8;
+	Set16(&headbuf[EXE_MINALLOC],i);
+	Set16(&headbuf[EXE_MAXALLOC],maxalloc);
 
 	/* build entries for relocation table */
 	header->relocCount=relCount+(gotstart?1:0)+(gotstack?2:0);

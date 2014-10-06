@@ -337,6 +337,8 @@ int sortCompare(const void *x1,const void *x2);
 void ClearNbit(PUCHAR mask,long i);
 void SetNbit(PUCHAR mask,long i);
 char GetNbit(PUCHAR mask,long i);
+void Set16(PUCHAR buf,USHORT v);
+void Set32(PUCHAR buf,UINT v);
 int wstricmp(const char *s1,const char*s2);
 int wstrlen(const char *s);
 unsigned short wtoupper(unsigned short a);

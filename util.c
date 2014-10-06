@@ -27,6 +27,20 @@ char GetNbit(PUCHAR mask,long i)
 	return (mask[i/8]>>(i%8))&1;
 }
 
+void Set16(PUCHAR buf,USHORT v)
+{
+	buf[0]=v&0xff;
+	buf[1]=(v>>8)&0xff;
+}
+
+void Set32(PUCHAR buf,UINT v)
+{
+	buf[0]=v&0xff;
+	buf[1]=(v>>8)&0xff;
+	buf[2]=(v>>16)&0xff;
+	buf[3]=(v>>24)&0xff;
+}
+
 unsigned short wtoupper(unsigned short a)
 {
 	if(a>=256) return a;
@@ -180,8 +194,7 @@ BOOL getStub(PCHAR stubName,PUCHAR *pstubData,UINT *pstubSize)
 			relocSize=EXE_HEADERSIZE>>4; /* min header size */
 		}
 
-		buf[EXE_HEADSIZE]=relocSize&0xff;
-		buf[EXE_HEADSIZE+1]=(relocSize>>8)&0xff;
+		Set16(&buf[EXE_HEADSIZE],relocSize);
 		/* move to start of data */
 		fseek(f,headerSize,SEEK_SET);
 		headerSize=relocSize<<4;
@@ -208,10 +221,8 @@ BOOL getStub(PCHAR stubName,PUCHAR *pstubData,UINT *pstubSize)
 
 		i=imageSize%512; /* size mod 512 */
 		imageSize=(imageSize+511)>>9; /* number of 512-byte pages */
-		buf[EXE_NUMBYTES]=i&0xff;
-		buf[EXE_NUMBYTES+1]=(i>>8)&0xff;
-		buf[EXE_NUMPAGES]=imageSize&0xff;
-		buf[EXE_NUMPAGES+1]=(imageSize>>8)&0xff;
+		Set16(&buf[EXE_NUMBYTES],i);
+		Set16(&buf[EXE_NUMPAGES],imageSize);
 	}
 	else
 	{
