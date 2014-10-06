@@ -81,10 +81,19 @@ static USHORT thisCpu=PE_INTEL386;
 static PSEG importSeg,exportSeg,relocSeg,resourceSeg,debugSeg,debugDir;
 static UINT impSegNum,expSegNum,relSegNum,resSegNum,debSegNum;
 
+static BOOL parseVersion(PCHAR str,UINT *major,UINT *minor)
+{
+	UINT numchars;
+	return (
+		sscanf(str,"%lu.%lu%ln",major,minor,&numchars)==2
+		&& str[numchars]=='\0'
+		&& (*major<65536) && (*minor<65536)
+	);
+}
+
 BOOL PEInitialise(PSWITCHPARAM sp)
 {
 	UINT i,j;
-	INT numchars;
 	PCHAR end;
 
 	for(;sp && sp->name;++sp)
@@ -267,13 +276,7 @@ BOOL PEInitialise(PSWITCHPARAM sp)
 		}
 		else if(!strcmp(sp->name,"subsysver"))
 		{
-			if(sscanf(sp->params[0],"%lu.%lu%ln",&i,&j,&numchars)!=2)
-			{
-				addError("Invalid subsystem version number %s",sp->params[0]);
-				return FALSE;
-			}
-			if(sp->params[0][numchars]
-			   || (i>65535) || (j>65535))
+			if(!parseVersion(sp->params[0],&i,&j))
 			{
 				addError("Invalid subsystem version number %s",sp->params[0]);
 				return FALSE;
@@ -283,13 +286,7 @@ BOOL PEInitialise(PSWITCHPARAM sp)
 		}
 		else if(!strcmp(sp->name,"osver"))
 		{
-			if(sscanf(sp->params[0],"%lu.%lu%ln",&i,&j,&numchars)!=2)
-			{
-				addError("Invalid OS version number %s",sp->params[0]);
-				return FALSE;
-			}
-			if(sp->params[0][numchars]
-			   || (i>65535) || (j>65535))
+			if(!parseVersion(sp->params[0],&i,&j))
 			{
 				addError("Invalid OS version number %s",sp->params[0]);
 				return FALSE;
