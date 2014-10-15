@@ -18,4 +18,7 @@
 #cmakedefine GOT_SNPRINTF
 #cmakedefine GOT__SNPRINTF
 
+/* MSVC has vsnprintf but no snprintf */
+#cmakedefine GOT_VSNPRINTF
+
 #endif

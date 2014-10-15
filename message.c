@@ -23,6 +23,7 @@ int snprintf(char *buf,size_t count,const char *fmt,...)
 	return (i>=0)?i:count;
 }
 
+#ifndef GOT_VSNPRINTF
 /* define standard vsnprintf based on MSVC _vsnprintf */
 int vsnprintf(char *buf,size_t count,const char*fmt,va_list ap)
 {
@@ -35,7 +36,7 @@ int vsnprintf(char *buf,size_t count,const char*fmt,va_list ap)
 	buf[count-1]=0;
 	return (i>=0)?i:count;
 }
-
+#endif
 #else
 #error snprintf or _snprintf needed
 #endif

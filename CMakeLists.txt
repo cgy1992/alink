@@ -33,6 +33,7 @@ check_function_exists( strdup GOT_STRDUP )
 check_function_exists( _strdup GOT__STRDUP )
 check_function_exists( snprintf GOT_SNPRINTF )
 check_function_exists( _snprintf GOT__SNPRINTF )
+check_function_exists( vsnprintf GOT_VSNPRINTF )
 
 if(UNIX)
 	add_definitions( -DGOT_CASE_SENSITIVE_FILENAMES )

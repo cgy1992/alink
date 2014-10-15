@@ -438,6 +438,8 @@ char *strupr(char *s);
 /* prototypes for snprintf and vsnprintf if they aren't already defined */
 #ifndef GOT_SNPRINTF
 int snprintf(char *buf,size_t count,const char *fmt,...);
+#endif
+#ifndef GOT_VSNPRINTF
 int vsnprintf(char *buf,size_t count,const char*fmt,va_list ap);
 #endif
 
