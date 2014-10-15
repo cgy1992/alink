@@ -984,7 +984,7 @@ static BOOL buildPEResources(void)
 	PDATABLOCK typeHeader=NULL,idHeader=NULL,langHeader=NULL;
 	PDATABLOCK typeEntry,idEntry,langEntry,dataEntry,nameEntry,realData;
 	UINT typenameCount=0,typeidCount=0,nameCount=0,idCount=0,langCount=0;
-	UINT now;
+	time_t now;
 
 	if(!globalResourceCount) return TRUE;
 
@@ -1243,12 +1243,13 @@ static int exportCompare(PPEXPORTREC e1,PPEXPORTREC e2)
 
 static BOOL buildPEExports(PCHAR name)
 {
-	UINT i,j,now;
+	UINT i,j;
 	UINT minOrd,maxOrd,numNames,numExports;
 	PSEG nameTable,addressTable,ordTable,nameList,forwarderList;
 	PDATABLOCK addrEntry,nameEntry,ordEntry,realName,forwarderEntry,hdr;
 	BOOL isName,isForwarder;
 	PCHAR forwarderString;
+	time_t now;
 
 	/* nothing to do if no exports */
 	if(!globalExportCount) return TRUE;
@@ -2223,7 +2224,7 @@ static BOOL buildPEDebug(PCHAR name)
 {
 	PSEG debugData;
 	PDATABLOCK dirEntry;
-	UINT now;
+	time_t now;
 
 	/* debug section starts with a directory listing the types of debug info available */
 	debugDir=createSection("Debug Directory",NULL,NULL,NULL,0,1);
